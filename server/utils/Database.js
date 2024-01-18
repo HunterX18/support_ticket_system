@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import DatabaseError from "./errors/database-connection-error.js";
 
 dotenv.config();
 
-mongoose
-	.connect(process.env.MONGODB_URI)
-	.then((result) => console.log("connected to db"))
-	.catch((err) => console.log(err));
+try {
+   await mongoose.connect(process.env.MONGODB_URI)
+   console.log("connected to database");
+} catch(error) {
+    throw new DatabaseError("Unable to connect to database");
+}
 
 export default mongoose;
