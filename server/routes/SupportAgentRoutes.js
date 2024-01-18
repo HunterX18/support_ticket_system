@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { createSupportAgent } from "../controllers/SupportAgentController.js";
+import {
+	assignAgent,
+	createSupportAgent,
+	getSupportAgents,
+} from "../controllers/SupportAgentController.js";
 
 const router = Router();
 
 router.post("/", createSupportAgent);
+router.get("/", getSupportAgents);
+router.get("/getAgent", assignAgent);
 
 export default router;

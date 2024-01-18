@@ -1,5 +1,11 @@
 import SupportTicketModel from "../schema/SupportTicketSchema.js";
 import tryCatch from "../middleware/tryCatch.js";
+import {
+	getAgentIndex,
+	getTotalAgents,
+	setAgentIndex,
+	setTotalAgents,
+} from "../utils/PersistentData.js";
 
 export const createSupportTicket = tryCatch(async (req, res) => {
 	const {
@@ -25,6 +31,11 @@ export const createSupportTicket = tryCatch(async (req, res) => {
 	});
 
 	await ticket.save();
+
+	let agentIndex = getAgentIndex();
+	let totalAgents = getTotalAgents();
+
+	setAgentIndex((agentIndex + 1) % totalAgents);
 
 	res.json({ status: "ticket created successfully", ticket });
 });

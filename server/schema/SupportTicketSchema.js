@@ -14,7 +14,7 @@ const supportTicketSchema = new Schema({
 		type: Date,
 		required: true,
 	},
-	serverity: {
+	severity: {
 		type: String,
 		required: true,
 	},
@@ -32,7 +32,6 @@ const supportTicketSchema = new Schema({
 	},
 	resolvedOn: {
 		type: Date,
-		required: true,
 	},
 });
 
