@@ -5,17 +5,19 @@ const Dropdown = ({ list, ticket, setTicket, setShowDropdown }) => {
 	};
 
 	return (
-		<div className="agents-list">
-			{list &&
-				list.map((agent) => (
-					<div key={agent.__id}>
-						<input
-							defaultValue={agent.name}
-							onClick={(e) => handleSelectAssignedTo(e)}
-						/>
-						<br />
-					</div>
-				))}
+		<div className="dropdown">
+			<ul className="dropdown-menu">
+				{list &&
+					list.map((agent) => (
+						<li key={agent.__id} className="dropdown-item">
+							<input
+								defaultValue={agent.name}
+								onClick={(e) => handleSelectAssignedTo(e)}
+							/>
+							<br />
+						</li>
+					))}
+			</ul>
 		</div>
 	);
 };

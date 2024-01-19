@@ -34,6 +34,7 @@ export const createSupportAgent = tryCatch(async (req, res) => {
 
 export const assignAgent = tryCatch(async (req, res) => {
 	let agentIndex = getAgentIndex();
+	console.log(agentIndex);
 	res.json({ assignedAgentIndex: agentIndex });
 });
 

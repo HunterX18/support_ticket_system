@@ -41,24 +41,30 @@ const CreateAgent = () => {
 	};
 
 	return (
-		<div>
+		<div className="card">
 			<h1>Create Agent</h1>
-			<label>Name</label>
-			<input value={agent.name} onChange={(e) => handleNameChange(e)} />
-			<br />
-			<label>Email</label>
-			<input value={agent.email} onChange={(e) => handleEmailChange(e)} />
-			<br />
-			<label>Phone</label>
-			<input value={agent.phone} onChange={(e) => handlePhoneChange(e)} />
-			<br />
-			<label>Description</label>
-			<input
-				value={agent.description}
-				onChange={(e) => handleDescriptionChange(e)}
-			/>
-			<br />
-			<button onClick={handleCreateAgent}>Create Agent</button>
+			<div className="card-body d-flex justify-content-center">
+				<div>
+					<label className="p-2">Name</label>
+					<input value={agent.name} onChange={(e) => handleNameChange(e)} />
+					<br />
+					<label className="p-2">Email</label>
+					<input value={agent.email} onChange={(e) => handleEmailChange(e)} />
+					<br />
+					<label className="p-2">Phone</label>
+					<input value={agent.phone} onChange={(e) => handlePhoneChange(e)} />
+					<br />
+					<label className="p-2">Description</label>
+					<input
+						value={agent.description}
+						onChange={(e) => handleDescriptionChange(e)}
+					/>
+					<br />
+					<button className="btn btn-primary" onClick={handleCreateAgent}>
+						Create Agent
+					</button>
+				</div>
+			</div>
 		</div>
 	);
 };

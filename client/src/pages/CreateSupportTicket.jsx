@@ -37,11 +37,12 @@ const CreateSupportTicket = () => {
 					const res = await axios.get(
 						"http://localhost:5000/api/support-agents/getAgent"
 					);
+					console.log(res.data);
 					setTicket({
 						...ticket,
 						assignedTo: agents[res.data.assignedAgentIndex].name,
 					});
-                    console.log(res.data);
+					console.log(res.data);
 				} catch (err) {
 					console.log(err);
 				}
@@ -99,58 +100,60 @@ const CreateSupportTicket = () => {
 	};
 
 	return (
-		<div>
-			<h1>Create Support Ticket</h1>
-			<div>
-				<label>Topic</label>
-				<input value={ticket.topic} onChange={(e) => handleTopicChange(e)} />
-				<br />
-				<label>Description</label>
-				<input
-					value={ticket.description}
-					onChange={(e) => handleDescriptionChange(e)}
-				/>
-				<br />
-				<label>Date Created</label>
-				<DatePicker
-					selected={ticket.dateCreated}
-					onChange={(date) => handleDateCreatedChange(date)}
-				/>
-				<br />
-				<label>Severity</label>
-				<input
-					value={ticket.severity}
-					onChange={(e) => handleSeverityChange(e)}
-				/>
-				<br />
-				<label>Type</label>
-				<input value={ticket.type} onChange={(e) => handleTypeChange(e)} />
-				<br />
-				<label>Status</label>
-				<select value={ticket.status} onChange={(e) => handleStatusChange(e)}>
-					<option>New</option>
-					<option>Assigned</option>
-					<option>Resolved</option>
-				</select>
-				<br />
-				{ticket.status === "Assigned" && (
-					<div>
-						<label>Assigned To</label>
-						<input defaultValue={ticket.assignedTo} readOnly />
-					</div>
-				)}
-				<br />
-				{ticket.status === "Resolved" && (
-					<>
-						<label>Resolved On</label>
-						<DatePicker
-							selected={ticket.resolvedOn}
-							onChange={(date) => handleResolvedOnChange(date)}
-						/>
-						<br />
-					</>
-				)}
-				<button onClick={handleCreateTicket}>Create Ticket</button>
+		<div className="card">
+			<h3>Create Support Ticket</h3>
+			<div className="card-body d-flex justify-content-center">
+				<div>
+					<label className="p-2">Topic</label>
+					<input value={ticket.topic} onChange={(e) => handleTopicChange(e)} />
+					<br />
+					<label className="p-2">Description</label>
+					<input
+						value={ticket.description}
+						onChange={(e) => handleDescriptionChange(e)}
+					/>
+					<br />
+					<label className="p-2">Date Created</label>
+					<DatePicker
+						selected={ticket.dateCreated}
+						onChange={(date) => handleDateCreatedChange(date)}
+					/>
+					<br />
+					<label className="p-2">Severity</label>
+					<input
+						value={ticket.severity}
+						onChange={(e) => handleSeverityChange(e)}
+					/>
+					<br />
+					<label className="p-2">Type</label>
+					<input value={ticket.type} onChange={(e) => handleTypeChange(e)} />
+					<br />
+					<label className="p-2">Status</label>
+					<select value={ticket.status} onChange={(e) => handleStatusChange(e)}>
+						<option>New</option>
+						<option>Assigned</option>
+						<option>Resolved</option>
+					</select>
+					<br />
+					{ticket.status === "Assigned" && (
+						<div>
+							<label className="p-2">Assigned To</label>
+							<input defaultValue={ticket.assignedTo} readOnly />
+						</div>
+					)}
+					<br />
+					{ticket.status === "Resolved" && (
+						<>
+							<label className="p-2">Resolved On</label>
+							<DatePicker
+								selected={ticket.resolvedOn}
+								onChange={(date) => handleResolvedOnChange(date)}
+							/>
+							<br />
+						</>
+					)}
+					<button className="btn btn-primary" onClick={handleCreateTicket}>Create Ticket</button>
+				</div>
 			</div>
 		</div>
 	);

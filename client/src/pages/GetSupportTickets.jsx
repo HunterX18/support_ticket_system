@@ -4,7 +4,6 @@ import Ticket from "../components/Ticket";
 
 const GetSupportTickets = () => {
 	const [tickets, setTickets] = useState([]);
-	const [filteredTickets, setFilteredTickets] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pages, setPages] = useState(0);
 	const [filter, setFilter] = useState({
@@ -70,15 +69,16 @@ const GetSupportTickets = () => {
 
 	const handleSortParam = (e) => {
 		setSortParam(e.target.value);
+		console.log(e.target.value);
 	};
 
 	const handleSort = () => {
-		// const sortedTickets = tickets.sort(
-		// 	(a, b) =>
-		// 		new Date(a[sortParam]).getTime() - new Date(b[sortParam]).getTime()
-		// );
-		// console.log(sortedTickets)
-		// setTickets(sortedTickets);
+		const sortedTickets = tickets.sort(
+			(a, b) =>
+				new Date(a[sortParam]).getTime() - new Date(b[sortParam]).getTime()
+		);
+		// console.log(sortParam, new Date(tickets[0][sortParam]).getTime());
+		setTickets(sortedTickets);
 	};
 
 	useEffect(() => {
@@ -111,6 +111,78 @@ const GetSupportTickets = () => {
 
 	return (
 		<div>
+			<div className="d-flex justify-content-start p-1">
+				<div className="d-flex m-1">
+					<label className="p-1">Status</label>
+					<select
+						className="form-select form-select-sm"
+						value={filter.status}
+						onChange={(e) => handleStatusChange(e)}
+					>
+						<option value="">None</option>
+						<option value="New">New</option>
+						<option value="Assigned">Assigned</option>
+						<option value="Resolved">Resolved</option>
+					</select>
+				</div>
+				<div className="d-flex m-1">
+					<label className="p-1">Severity</label>
+					<select
+						className="form-select form-select-sm"
+						value={filter.severity}
+						onChange={(e) => handleSeverityChange(e)}
+					>
+						<option value="">None</option>
+						<option value="Low">Low</option>
+						<option value="Medium">Medium</option>
+						<option value="High">High</option>
+					</select>
+				</div>
+				<div className="d-flex m-1">
+					<label className="p-1">Assigned</label>
+					<input
+						className="input-group input-group-sm"
+						value={searchAgent}
+						onChange={(e) => handleAssignedChange(e)}
+					/>
+					{showDropdown && (
+						<div className="dropdown">
+							<ul className="dropdown-menu">
+								{filteredAgents.map((agent) => (
+									<li key={agent._id} className="dropdown-item">
+										<input
+											onClick={(e) => handleAssignedChangeConfirm(e)}
+											key={agent._id}
+											value={agent.name}
+											readOnly
+										/>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+				</div>
+				<button className="btn btn-primary btn-sm m-1" onClick={handleFilter}>
+					Filter
+				</button>
+			</div>
+			<div className="d-flex w-25 m-1 justify-content-start">
+				<div className="d-flex">
+					<label className="p-1">Sort</label>
+					<select
+						className="form-select form-select-sm"
+						value={sortParam}
+						onChange={(e) => handleSortParam(e)}
+					>
+						<option value="dateCreated">Date Created</option>
+						<option value="resolvedOn">Resolved on</option>
+					</select>
+				</div>
+				<button className="btn btn-primary btn-sm" onClick={handleSort}>
+					Sort
+				</button>
+			</div>
+
 			{tickets &&
 				tickets.map((ticket, ind) => (
 					<Ticket
@@ -121,53 +193,19 @@ const GetSupportTickets = () => {
 						tickets={tickets}
 					/>
 				))}
-
-			{[...Array(pages)].map((_, ind) => (
-				<button onClick={() => handleChangeCurrentPage(ind + 1)}>
-					{ind + 1}
-				</button>
-			))}
-			<br />
-			<label>Filter by Status</label>
-			<select value={filter.status} onChange={(e) => handleStatusChange(e)}>
-				<option value="">None</option>
-				<option value="New">New</option>
-				<option value="Assigned">Assigned</option>
-				<option value="Resolved">Resolved</option>
-			</select>
-			<br />
-			<label>Filter by Severity</label>
-			<select value={filter.severity} onChange={(e) => handleSeverityChange(e)}>
-				<option value="">None</option>
-				<option value="Low">Low</option>
-				<option value="Medium">Medium</option>
-				<option value="High">High</option>
-			</select>
-			<br />
-			<label>Filter by Assigned to</label>
-			<input value={searchAgent} onChange={(e) => handleAssignedChange(e)} />
-			{showDropdown &&
-				filteredAgents.map((agent) => (
-					<>
-						<br />
-						<input
-							onClick={(e) => handleAssignedChangeConfirm(e)}
-							key={agent._id}
-							value={agent.name}
-							readOnly
-						/>
-					</>
+			<ul className="pagination">
+				{[...Array(pages)].map((_, ind) => (
+					<li className="page-item">
+						<button
+							className="page-link"
+							onClick={() => handleChangeCurrentPage(ind + 1)}
+						>
+							{ind + 1}
+						</button>
+					</li>
 				))}
+			</ul>
 			<br />
-			<button onClick={handleFilter}>Filter</button>
-			<br />
-			<label>Sort by </label>
-			<select value={sortParam} onChange={(e) => handleSortParam(e)}>
-				<option value="dateCreated">Date Created</option>
-				<option value="resolvedOn">Resolved on</option>
-			</select>
-			<br />
-			<button onClick={handleSort}>Sort</button>
 		</div>
 	);
 };

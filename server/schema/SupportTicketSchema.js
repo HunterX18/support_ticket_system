@@ -24,7 +24,6 @@ const supportTicketSchema = new Schema({
 	},
 	assignedTo: {
 		type: String,
-		required: true,
 	},
 	status: {
 		type: String,
