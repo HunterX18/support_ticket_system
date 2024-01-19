@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+	res.json("Server is running");
+});
+
 app.use("/api/support-agents", SupportAgentRoutes);
 app.use("/api/support-tickets", SupportTicketRoutes);
 
