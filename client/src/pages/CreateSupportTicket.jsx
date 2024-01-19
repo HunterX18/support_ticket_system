@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { API_URL } from "../api_url";
 
 const CreateSupportTicket = () => {
 	const [ticket, setTicket] = useState({
@@ -20,7 +21,7 @@ const CreateSupportTicket = () => {
 	useEffect(() => {
 		const getSupportAgents = async () => {
 			try {
-				const res = await axios.get("http://localhost:5000/api/support-agents");
+				const res = await axios.get(`${API_URL}/api/support-agents`);
 				const availableAgents = res.data;
 				setAgents(availableAgents);
 			} catch (err) {
@@ -34,9 +35,7 @@ const CreateSupportTicket = () => {
 		async function getAssignedAgent() {
 			if (ticket.status === "Assigned") {
 				try {
-					const res = await axios.get(
-						"http://localhost:5000/api/support-agents/getAgent"
-					);
+					const res = await axios.get(`${API_URL}/api/support-agents/getAgent`);
 					console.log(res.data);
 					setTicket({
 						...ticket,
@@ -88,10 +87,7 @@ const CreateSupportTicket = () => {
 			resolvedOn: null,
 		});
 		try {
-			const res = await axios.post(
-				"http://localhost:5000/api/support-tickets",
-				ticket
-			);
+			const res = await axios.post(`${API_URL}/api/support-tickets`, ticket);
 			console.log(res);
 			alert("Ticket created successfully");
 		} catch (err) {
@@ -152,7 +148,9 @@ const CreateSupportTicket = () => {
 							<br />
 						</>
 					)}
-					<button className="btn btn-primary" onClick={handleCreateTicket}>Create Ticket</button>
+					<button className="btn btn-primary" onClick={handleCreateTicket}>
+						Create Ticket
+					</button>
 				</div>
 			</div>
 		</div>

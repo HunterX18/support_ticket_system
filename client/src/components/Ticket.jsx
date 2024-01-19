@@ -1,6 +1,7 @@
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../api_url";
 
 const Ticket = ({ ticket, tickets, setTickets, ind }) => {
 	const [thisTicket, setThisTicket] = useState(ticket);
@@ -16,10 +17,7 @@ const Ticket = ({ ticket, tickets, setTickets, ind }) => {
 
 	const handleConfirmChange = async () => {
 		console.log(thisTicket);
-		const res = await axios.put(
-			"http://localhost:5000/api/support-tickets",
-			thisTicket
-		);
+		const res = await axios.put(`${API_URL}/api/support-tickets`, thisTicket);
 		window.location.reload();
 		console.log(res.data);
 	};

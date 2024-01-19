@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Ticket from "../components/Ticket";
+import { API_URL } from "../api_url";
 
 const GetSupportTickets = () => {
 	const [tickets, setTickets] = useState([]);
@@ -57,7 +58,7 @@ const GetSupportTickets = () => {
 		console.log(filter);
 		try {
 			const res = await axios.get(
-				`http://localhost:5000/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
+				`${API_URL}/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
 			);
 			setTickets(res.data.tickets);
 			// setFilteredTickets(res.data.tickets);
@@ -84,7 +85,7 @@ const GetSupportTickets = () => {
 	useEffect(() => {
 		async function getAgents() {
 			try {
-				const res = await axios.get("http://localhost:5000/api/support-agents");
+				const res = await axios.get(`${API_URL}/api/support-agents`);
 				setAgents(res.data);
 			} catch (err) {
 				console.log(err);
@@ -97,7 +98,7 @@ const GetSupportTickets = () => {
 		async function getTickets() {
 			try {
 				const res = await axios.get(
-					`http://localhost:5000/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
+					`${API_URL}/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
 				);
 				setTickets(res.data.tickets);
 				// setFilteredTickets(res.data.tickets);

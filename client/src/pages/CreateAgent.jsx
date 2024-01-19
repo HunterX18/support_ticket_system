@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api_url";
 
 const CreateAgent = () => {
 	const [agent, setAgent] = useState({
@@ -23,10 +24,7 @@ const CreateAgent = () => {
 	};
 	const handleCreateAgent = async () => {
 		try {
-			const res = await axios.post(
-				"http://localhost:5000/api/support-agents",
-				agent
-			);
+			const res = await axios.post(`${API_URL}/api/support-agents`, agent);
 			console.log(res.data);
 			setAgent({
 				name: "",
