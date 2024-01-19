@@ -11,7 +11,11 @@ function App() {
 				<Navbar />
 				<Routes>
 					<Route exact path="/" element={<CreateSupportTicket />} />
-					<Route exact path="/tickets" element={<GetSupportTickets />} />
+					<Route
+						exact
+						path="/tickets?page=1&limit=2"
+						element={<GetSupportTickets />}
+					/>
 					<Route exact path="/createAgent" element={<CreateAgent />} />
 				</Routes>
 			</Router>
