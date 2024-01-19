@@ -41,6 +41,11 @@ export const createSupportTicket = tryCatch(async (req, res) => {
 });
 
 export const getSupportTickets = tryCatch(async (req, res) => {
-	const tickets = await SupportTicketModel.find({});
-	res.json({ tickets });
+	const page = +req.query.page;
+	const limit = +req.query.limit;
+	const startIndex = (page - 1) * limit;
+	const endIndex = page * limit;
+	const allTickets = await SupportTicketModel.find({});
+	const tickets = allTickets.slice(startIndex, endIndex);
+	res.json({ tickets, noOfTickets: allTickets.length });
 });
