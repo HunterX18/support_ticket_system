@@ -4,12 +4,13 @@ import Ticket from "../components/Ticket";
 
 const GetSupportTickets = () => {
 	const [tickets, setTickets] = useState([]);
+	const [filteredTickets, setFilteredTickets] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pages, setPages] = useState(0);
 	const [filter, setFilter] = useState({
-		status: "New",
+		status: "",
 		assignedTo: "",
-		severity: "Low",
+		severity: "",
 	});
 	const [agents, setAgents] = useState([]);
 	const [filteredAgents, setFilteredAgents] = useState([]);
@@ -36,7 +37,10 @@ const GetSupportTickets = () => {
 		// console.log(e.target.value);
 		setSearchAgent(e.target.value);
 		if (e.target.value !== "") setShowDropdown(true);
-		else setShowDropdown(false);
+		else {
+			setShowDropdown(false);
+			setFilter({ ...filter, assignedTo: "" });
+		}
 		const filteredAgents1 = agents.filter((agent) =>
 			agent.name.includes(e.target.value)
 		);
@@ -47,10 +51,21 @@ const GetSupportTickets = () => {
 		setFilter({ ...filter, assignedTo: e.target.value });
 		setSearchAgent(e.target.value);
 		setShowDropdown(false);
+		console.log(e.target.value);
 	};
 
-	const handleFilter = () => {
+	const handleFilter = async () => {
 		console.log(filter);
+		try {
+			const res = await axios.get(
+				`http://localhost:5000/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
+			);
+			setTickets(res.data.tickets);
+			// setFilteredTickets(res.data.tickets);
+			setPages(Math.ceil(res.data.noOfTickets / limit));
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const handleSortParam = (e) => {
@@ -58,7 +73,12 @@ const GetSupportTickets = () => {
 	};
 
 	const handleSort = () => {
-		console.log(sortParam);
+		// const sortedTickets = tickets.sort(
+		// 	(a, b) =>
+		// 		new Date(a[sortParam]).getTime() - new Date(b[sortParam]).getTime()
+		// );
+		// console.log(sortedTickets)
+		// setTickets(sortedTickets);
 	};
 
 	useEffect(() => {
@@ -77,9 +97,10 @@ const GetSupportTickets = () => {
 		async function getTickets() {
 			try {
 				const res = await axios.get(
-					`http://localhost:5000/api/support-tickets?page=${currentPage}&limit=${limit}`
+					`http://localhost:5000/api/support-tickets?page=${currentPage}&limit=${limit}&status=${filter.status}&severity=${filter.severity}&assignedTo=${filter.assignedTo}`
 				);
 				setTickets(res.data.tickets);
+				// setFilteredTickets(res.data.tickets);
 				setPages(Math.ceil(res.data.noOfTickets / limit));
 			} catch (err) {
 				console.log(err);
@@ -91,7 +112,16 @@ const GetSupportTickets = () => {
 	return (
 		<div>
 			{tickets &&
-				tickets.map((ticket) => <Ticket ticket={ticket} key={ticket._id} />)}
+				tickets.map((ticket, ind) => (
+					<Ticket
+						ind={ind}
+						ticket={ticket}
+						key={ticket._id}
+						setTickets={setTickets}
+						tickets={tickets}
+					/>
+				))}
+
 			{[...Array(pages)].map((_, ind) => (
 				<button onClick={() => handleChangeCurrentPage(ind + 1)}>
 					{ind + 1}
@@ -100,6 +130,7 @@ const GetSupportTickets = () => {
 			<br />
 			<label>Filter by Status</label>
 			<select value={filter.status} onChange={(e) => handleStatusChange(e)}>
+				<option value="">None</option>
 				<option value="New">New</option>
 				<option value="Assigned">Assigned</option>
 				<option value="Resolved">Resolved</option>
@@ -107,6 +138,7 @@ const GetSupportTickets = () => {
 			<br />
 			<label>Filter by Severity</label>
 			<select value={filter.severity} onChange={(e) => handleSeverityChange(e)}>
+				<option value="">None</option>
 				<option value="Low">Low</option>
 				<option value="Medium">Medium</option>
 				<option value="High">High</option>
