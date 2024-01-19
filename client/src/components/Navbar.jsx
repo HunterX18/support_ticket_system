@@ -25,7 +25,7 @@ const Navbar = () => {
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/tickets">
+							<a class="nav-link" href="/tickets?page=1&limit=2">
 								Show Tickets
 							</a>
 						</li>
