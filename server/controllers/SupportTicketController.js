@@ -43,9 +43,10 @@ export const createSupportTicket = tryCatch(async (req, res) => {
 export const getSupportTickets = tryCatch(async (req, res) => {
 	const page = +req.query.page;
 	const limit = +req.query.limit;
-	const status = req.query.status;
-	const severity = req.query.severity;
-	const assignedTo = req.query.assignedTo;
+	const status = req.query.status !== undefined ? req.query.status : "";
+	const severity = req.query.severity !== undefined ? req.query.severity : "";
+	const assignedTo =
+		req.query.assignedTo !== undefined ? req.query.assignedTo : "";
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 	const allTickets = await SupportTicketModel.find({});
@@ -57,6 +58,7 @@ export const getSupportTickets = tryCatch(async (req, res) => {
 		);
 	});
 	const tickets = filteredTickets.slice(startIndex, endIndex);
+	console.log(status, severity);
 	res.json({ tickets, noOfTickets: filteredTickets.length });
 });
 
